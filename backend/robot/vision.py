@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 from pyzbar.pyzbar import decode
 
+
 class VideoCamera(object):
     def __init__(self, coords_parser):
         self.video = cv2.VideoCapture(0)
@@ -10,7 +11,7 @@ class VideoCamera(object):
         self.send_box = coords_parser
         self.scanning = False
 
-    def do_scanning(self):
+    def toggle_scanning(self):
         if self.scanning:
             self.scanning = False
         else:

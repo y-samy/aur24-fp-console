@@ -5,11 +5,6 @@ from robot.vision import VideoCamera
 app = Flask(__name__)
 
 
-@app.route("/")
-def index():
-    return render_template("../ui/src/index.js")
-
-
 def gen(camera):
     while True:
         frame = camera.get_frame()
@@ -18,7 +13,7 @@ def gen(camera):
 
 box_handler = BoxHandler()
 camera = VideoCamera(box_handler.receive_coords)
-camera.do_scanning()
+
 
 @app.route("/video_feed")
 def video_feed():
@@ -26,6 +21,12 @@ def video_feed():
         gen(camera),
         mimetype="multipart/x-mixed-replace; boundary=frame",
     )
+
+
+@app.route("/toggle_scanning")
+def toggle_scanning():
+    camera.toggle_scanning()
+    return Response(status=204)
 
 
 if __name__ == "__main__":
