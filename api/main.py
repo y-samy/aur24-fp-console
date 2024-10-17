@@ -1,11 +1,11 @@
 from flask import Flask, render_template, Response
-from vision.cam import VideoCamera
+from vision.qr import VideoCamera
 
 app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('index.js')
+    return render_template('../ui/src/index.js')
     
 def gen(camera):
     while True:
