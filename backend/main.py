@@ -17,12 +17,13 @@ def gen(camera):
 
 
 box_handler = BoxHandler()
-
+camera = VideoCamera(box_handler.receive_coords)
+camera.do_scanning()
 
 @app.route("/video_feed")
 def video_feed():
     return Response(
-        gen(VideoCamera(box_handler.store_box)),
+        gen(camera),
         mimetype="multipart/x-mixed-replace; boundary=frame",
     )
 
