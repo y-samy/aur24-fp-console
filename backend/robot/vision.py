@@ -12,10 +12,8 @@ class VideoCamera(object):
         self.scanning = False
 
     def toggle_scanning(self):
-        if self.scanning:
-            self.scanning = False
-        else:
-            self.scanning = True
+        self.scanning = not self.scanning
+        return self.scanning
 
     def __del__(self):
         self.video.release()
