@@ -15,7 +15,7 @@ box_handler = BoxHandler()
 camera = VideoCamera(box_handler.receive_coords)
 
 
-@app.route("/video_feed")
+@app.route("/video/feed")
 def video_feed():
     return Response(
         gen(camera),
@@ -23,7 +23,7 @@ def video_feed():
     )
 
 
-@app.route("/toggle_scanning")
+@app.route("/video/toggle_scanning")
 def toggle_scanning():
     camera.toggle_scanning()
     return Response(status=204)
