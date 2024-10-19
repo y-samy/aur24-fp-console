@@ -1,6 +1,7 @@
 from flask import Flask, render_template, Response
 from robot.boxes import BoxHandler
-from robot.vision import VideoCamera
+from robot.vision.camera import VideoCamera
+from robot.vision.decoding import QR
 
 app = Flask(__name__)
 
@@ -10,9 +11,9 @@ def gen(camera):
         frame = camera.get_frame()
         yield (b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n\r\n")
 
-
 box_handler = BoxHandler()
-camera = VideoCamera(box_handler.receive_coords)
+qr_decoder = QR(receiver_func=box_handler.receive_coords)
+camera = VideoCamera(decoder_func=qr_decoder.decode)
 
 
 @app.route("/video/feed")
