@@ -13,7 +13,7 @@ def gen(camera):
 
 box_handler = BoxHandler()
 qr_decoder = QR(receiver_func=box_handler.receive_coords)
-camera = VideoCamera(decoder_func=qr_decoder.decode)
+camera = VideoCamera(camera_number=1,decoder_func=qr_decoder.decode)
 
 
 @app.route("/video/feed")

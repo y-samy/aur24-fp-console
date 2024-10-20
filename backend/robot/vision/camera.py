@@ -2,8 +2,8 @@ import cv2
 
 
 class VideoCamera(object):
-    def __init__(self, decoder_func):
-        self.video = cv2.VideoCapture(0)
+    def __init__(self, camera_number, decoder_func):
+        self.video = cv2.VideoCapture(camera_number)
         self.video.set(3, 640)
         self.video.set(4, 480)
         self.send_for_decode = decoder_func
