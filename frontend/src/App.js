@@ -2,19 +2,19 @@ import React, { useState } from "react";
 
 const App = () => {
 function handleClick() {
-  alert('You clicked me!');
+  fetch("/video/toggle_scanning")
 }
 
 return (
   <>
   <div class="centered">
    <img
-    src="http://localhost:5000/video_feed"
+    src="/video/feed"
     alt="Video"
    />
   </div>
   <button onClick={handleClick}>
-  Click me
+  Turn on scanning
   </button>
   </>
  );
