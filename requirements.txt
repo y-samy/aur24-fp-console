@@ -1,6 +1,7 @@
 flask
 flask-socketio
 opencv-python
+cv2-enumerate-cameras
 pyzbar
 numpy
 qreader
