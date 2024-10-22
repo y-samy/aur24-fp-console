@@ -1,10 +1,10 @@
-from flask import Flask, Response
+from flask import Flask, Response, request
+
 from robot.navigation.boxes import BoxHandler
 from robot.vision.camera import VideoCamera
 from robot.vision.decoding import QR
 
 app = Flask(__name__)
-
 
 box_handler = BoxHandler()
 qr_decoder = QR(receiver_function=box_handler.receive_coords)
@@ -41,6 +41,11 @@ def toggle_scanning():
 @app.route("/video/scanning/set_algorithm/<algorithm>")
 def set_scanning_algorithm(algorithm):
     qr_decoder.set_decoder(str(algorithm))
+    return Response(status=204)
+
+@app.route("/gamepad_states", methods=['POST'])
+def handle_gamepad_data():
+    data = request.get_json(silent=True)
     return Response(status=204)
 
 if __name__ == "__main__":
