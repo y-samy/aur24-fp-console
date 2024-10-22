@@ -1,5 +1,5 @@
 from flask import Flask, Response
-from robot.boxes import BoxHandler
+from robot.navigation.boxes import BoxHandler
 from robot.vision.camera import VideoCamera
 from robot.vision.decoding import QR
 
@@ -38,6 +38,10 @@ def toggle_scanning():
     camera.toggle_scanning()
     return Response(status=204)
 
+@app.route("/video/scanning/set_algorithm/<algorithm>")
+def set_scanning_algorithm(algorithm):
+    qr_decoder.set_decoder(str(algorithm))
+    return Response(status=204)
 
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=5000, threaded=True, use_reloader=False)
