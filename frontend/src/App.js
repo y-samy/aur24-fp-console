@@ -1,34 +1,59 @@
 import React, { useState, useEffect } from "react";
+import GamepadController from './Controller.js';
 import "./App.css";
 import { io } from 'socket.io-client';
 import MapDisplay from './MapDisplay'; 
+
 const socketIo = io('http://localhost:5000');
 
 const App = () => {
   const [scanningData, setScanningData] = useState([]);
   const [robotPosition, setRobotPosition] = useState({ x: 0, y: 0 }); 
+  const [connectionMessage, setConnectionMessage] = useState(""); 
+
   useEffect(() => {
     socketIo.on("connect", () => {
       console.log("Connected to Socket.IO server");
+    });
+
+    socketIo.on("connected", (data) => { 
+      setConnectionMessage(data.message); 
+      console.log("Message from server:", data.message);
     });
 
     socketIo.on("scanning_toggled", (data) => {
       console.log("Message from server:", data.status);
     });
 
-    // Listening for localization data
     socketIo.on("localization_data", (data) => {
-      // Assuming data contains x and y properties
       setRobotPosition({ x: data.x, y: data.y });
     });
 
+    // Listen for new scanned data
+    socketIo.on("new_scanned_data", (data) => {
+      console.log("New scanned data:", data.coords);
+      // Update the scanningData state with the new coordinates
+      setScanningData(prevData => [...prevData, data.coords]);
+    });
+
+    // Cleanup on unmount
     return () => {
+      socketIo.off("connect");
+      socketIo.off("connected");
+      socketIo.off("scanning_toggled");
+      socketIo.off("localization_data");
+      socketIo.off("new_scanned_data");
       socketIo.disconnect();
     };
   }, []);
 
   const handleScan = () => {
     socketIo.emit("toggle_scanning");
+    console.log("Scanning toggled");
+  };
+
+  const requestLocalizationData = () => {
+    socketIo.emit("request_localization_data");
   };
 
   return (
@@ -38,7 +63,7 @@ const App = () => {
           <h3>Scanned Data:</h3>
           <ul>
             {scanningData.map((item, index) => (
-              <li key={index}>{item}</li>
+              <li key={index}>{`X: ${item.X}, Y: ${item.Y}`}</li> // Display formatted data
             ))}
           </ul>
         </div>
@@ -51,8 +76,8 @@ const App = () => {
             />
           </div>
           <div className="controls">
-            <button>
-              Turn off
+            <button onClick={requestLocalizationData}>
+              Get Localization Data
             </button>
             <button onClick={handleScan}>
               Fast scan
@@ -66,8 +91,12 @@ const App = () => {
           </div>
           <h1>Robot Position</h1>
           <MapDisplay robotPosition={robotPosition} />
+          <div className="connection-message">
+            {connectionMessage} {/* Display connection message */}
+          </div>
         </div>
       </div>
+      <GamepadController />
     </>
   );
 };
