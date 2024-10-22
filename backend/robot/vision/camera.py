@@ -6,7 +6,8 @@ from cv2_enumerate_cameras import enumerate_cameras
 class VideoCamera(object):
     def __init__(self, scanner_function, camera_number=0):
         self.__preferred_enum_apis = {
-            "nt": cv2.CAP_MSMF
+            "nt": cv2.CAP_MSMF,
+            "posix": cv2.CAP_GSTREAMER
         }  # enumerating API preferences according to OS
         self.__enum_api = self.__preferred_enum_apis[platform]
         self.__cameras = []
