@@ -1,7 +1,9 @@
 flask
-opencv-python
-pyzbar
-numpy
 flask-socketio
 flask-cors
 paho-mqtt
+opencv-python
+cv2-enumerate-cameras
+pyzbar
+numpy
+qreader
