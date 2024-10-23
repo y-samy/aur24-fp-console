@@ -35,9 +35,11 @@ class VideoCamera(object):
         self.__pause = not self.__pause
         return self.__pause
     
+    def is_scanning(self):
+        return self.__scanning
+    
     def toggle_scanning(self):
         self.__scanning = not self.__scanning
-        return self.__scanning
 
     def get_frame(self):
         if self.__pause:
