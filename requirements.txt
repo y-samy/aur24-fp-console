@@ -3,3 +3,5 @@ opencv-python
 pyzbar
 numpy
 flask-socketio
+flask-cors
+paho-mqtt
