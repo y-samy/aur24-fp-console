@@ -1,7 +1,9 @@
 flask-venv/
 __pycache__/
 
-
+resource/
+test/
+log/
 # dependencies
 node_modules/
 .pnp
@@ -11,7 +13,10 @@ node_modules/
 coverage
 
 # production
-build
+build/
+install/
+*.zip
+*venv/
 
 # misc
 .DS_Store
