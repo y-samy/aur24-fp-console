@@ -1,4 +1,6 @@
 from . import socketio
-@socketio.on("gamepad on_pressed")
+import paho.mqtt.publish as publish
+@socketio.on("gamepad buttons")
 def map_and_send_buttons(data):
-    print(data)
+    # ... manipulate data
+    publish.single("navigation/send_controls", data) # to localhost:1883

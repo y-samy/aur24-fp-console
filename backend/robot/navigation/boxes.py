@@ -26,14 +26,17 @@ class BoxHandler:
 
         coords = {"X": coords[0][2:], "Y": coords[1][2:]}
         is_unique = True
-        for box in self.__boxes:
+        for i, box in enumerate(self.__boxes):
             if box.dest_coords == coords:
                 is_unique = False
-                break
+                return f"Box {i}"
         
         if is_unique:
             new_box = Box(coords, 1) 
             self.__boxes.append(new_box)
             print("New box added:", coords)
             self.__callback_on_new_box(coords)
+            return f"Box {len(self.__boxes)}"
+
+        
 

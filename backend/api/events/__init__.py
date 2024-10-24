@@ -11,3 +11,4 @@ def handle_disconnect():
     print("A client has disconnected")
 
 from .boxes import push_new_box
+from .gamepad import *
