@@ -29,14 +29,14 @@ class BoxHandler:
         for i, box in enumerate(self.__boxes):
             if box.dest_coords == coords:
                 is_unique = False
-                return f"Box {i}"
+                return f"Box {1+i}"
         
         if is_unique:
             new_box = Box(coords, 1) 
             self.__boxes.append(new_box)
             print("New box added:", coords)
             self.__callback_on_new_box(coords)
-            return f"Box {len(self.__boxes)}"
+            return f"Box {1+len(self.__boxes)}"
 
         
 
