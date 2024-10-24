@@ -4,7 +4,7 @@ from cv2_enumerate_cameras import enumerate_cameras
 
 
 class VideoCamera(object):
-    def __init__(self, scanner_function, camera_number=0):
+    def __init__(self, scanner_function, camera_number=0, scanning=False):
         self.__preferred_enum_apis = {
             "nt": cv2.CAP_MSMF,
             "posix": cv2.CAP_GSTREAMER
@@ -12,7 +12,7 @@ class VideoCamera(object):
         self.__enum_api = self.__preferred_enum_apis[platform]
         self.__cameras = []
         self.__pause = False  # stream should start out unpaused
-        self.__scanning = False  # scanning should be turned on on-demand
+        self.__scanning = scanning  # scanning should be turned on on-demand
         self.__send_to_scanner = scanner_function  # called when scanning is on, captured frame is passed as parameter
         self.__video = cv2.VideoCapture()
         self.set_source(camera_number)
@@ -31,8 +31,10 @@ class VideoCamera(object):
             self.__cameras.append(cam.name)
         return self.__cameras
 
-    def pause_resume_stream(self):
+    def toggle_pause(self):
         self.__pause = not self.__pause
+
+    def get_pause_state(self):
         return self.__pause
     
     def is_scanning(self):
