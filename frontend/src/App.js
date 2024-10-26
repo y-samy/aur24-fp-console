@@ -4,12 +4,13 @@ import "./App.css";
 import { io } from 'socket.io-client';
 import MapDisplay from './MapDisplay'; 
 
-const socketIo = io('http://localhost:5000');
 
 const App = () => {
   const [scanningData, setScanningData] = useState([]);
   const [robotPosition, setRobotPosition] = useState({ x: 0, y: 0 }); 
   const [connectionMessage, setConnectionMessage] = useState(""); 
+ 
+  const socketIo = io('http://localhost:5000');
 
   useEffect(() => {
     socketIo.on("connect", () => {
