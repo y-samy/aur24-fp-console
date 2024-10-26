@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { io } from 'socket.io-client';
-const socketIo = io('http://localhost:5000');
+const socketIo = io('http://localhost:80');
 function GamepadController() {
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -37,7 +37,7 @@ function GamepadController() {
         }
         };
       if (command !== -1){
-      socketIo.emit("gamepad buttons", command, commandValue); 
+      socketIo.emit("gamepad buttons", `${command} ${commandValue}`); 
       }
         // if(gp_state.r2 > gp_state.l2){
         //   gp_state.r2 = gp_state.r2 - gp_state.l2
