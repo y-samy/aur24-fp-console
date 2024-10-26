@@ -15,7 +15,11 @@ python -m venv flask-venv
 Activate the environment
 
 ```sh
+# Windows
 ./flask-venv/Scripts/activate
+# Linux
+chmod +x ./flask-venv/bin/activate
+./flask-venv/bin/activate
 ```
 
 Install the dependencies
