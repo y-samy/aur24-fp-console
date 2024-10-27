@@ -1,7 +1,6 @@
 from flask import Flask
 from flask_socketio import SocketIO
 from flask_cors import CORS
-from mqtt_client import create_mqtt_client
 
 from robot.navigation.boxes import BoxHandler
 from robot.vision.camera import VideoCamera
@@ -23,6 +22,4 @@ app.register_blueprint(video_routes, url_prefix='/video')
 from .events import *
 box_handler.set_callback_on_new_box(push_new_box)
 
-# Create the MQTT client
-mqtt_client = create_mqtt_client()
 

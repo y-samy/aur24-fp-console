@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { io } from 'socket.io-client';
-const socketIo = io('http://localhost:80');
+const socketIo = io('http://localhost:5000');
 function GamepadController() {
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -10,7 +10,6 @@ function GamepadController() {
       if (gamepads[0]) { // Ensure a gamepad is connected
         command = -1;
         const gamepad = gamepads[0];
-        // Create a state object to capture gamepad status
         if (gamepad.buttons[0].pressed){
           command = 0; // Arm down X 
           commandValue = 0;
@@ -28,25 +27,17 @@ function GamepadController() {
           commandValue = 1;
         }
         else if (gamepad.buttons[7].pressed || gamepad.buttons[6].pressed){
-          command = 2;
+          command = 2; // Motion 1: fwd, -1: bwd
           commandValue = gamepad.buttons[7].value - gamepad.buttons[6].value
         }
         else if (gamepad.axes[2] > 0.1 || gamepad.axes[2] < -0.1){
-          command = 3;
+          command = 3; // Rotation (horizontal right analog stick, left:-1, right:1)
           commandValue = gamepad.axes[2];
         }
         };
       if (command !== -1){
-      socketIo.emit("gamepad buttons", `${command} ${commandValue}`); 
+      socketIo.emit("gamepad buttons", `${command},${commandValue}`); 
       }
-        // if(gp_state.r2 > gp_state.l2){
-        //   gp_state.r2 = gp_state.r2 - gp_state.l2
-        //   gp_state.l2 = 0
-        // }
-        // else{
-        //   gp_state.l2 = gp_state.l2 - gp_state.r2
-        //   gp.state.r2 = 0 
-        // }
     }, 15); // Update every 15 milliseconds
     return () => clearInterval(intervalId); // Cleanup on component unmount
   }, []);
