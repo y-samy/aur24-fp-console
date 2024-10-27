@@ -18,8 +18,13 @@ socketio = SocketIO(app, cors_allowed_origins="http://localhost:3000")
 from .routes import video_routes
 app.register_blueprint(video_routes, url_prefix='/video')
 
+# mqtt
+import paho.mqtt.client as mqtt
+mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
+mqttc.connect(host="localhost")
+mqttc.loop_start()
+
 # api events
 from .events import *
 box_handler.set_callback_on_new_box(push_new_box)
-
 

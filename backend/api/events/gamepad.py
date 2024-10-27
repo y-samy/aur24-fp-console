@@ -1,8 +1,7 @@
-from . import socketio
-import json
-import paho.mqtt.publish as publish
+from . import socketio, mqttc
+
 
 @socketio.on("gamepad buttons")
 def map_and_send_buttons(command):
   print(command)
-  publish.single("Motion Commands", command) # to localhost:1883
+  mqttc.publish("Motion Commands", command, qos=1) # to localhost:1883

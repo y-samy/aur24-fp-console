@@ -1,5 +1,5 @@
 from flask_socketio import emit
-from .. import socketio
+from .. import socketio, mqttc
 
 @socketio.on("connect")
 def handle_connect():
