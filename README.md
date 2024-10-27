@@ -28,7 +28,7 @@ chmod +x ./flask-venv/bin/activate
 Install the dependencies
 
 ```sh
-pip install ./requirements.txt
+pip install ./backend/requirements.txt
 ```
 
 Running the flask server
