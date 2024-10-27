@@ -56,3 +56,13 @@ Run
 cd ./frontend
 npm start
 ```
+
+## Gamepad controls
+**Controller Commands**
+* L2 = B6 -> back
+* R2 = B7 -> fwd
+* B0, B1 : x, o
+* B2, B3: sqr, tri
+* Axes: +ve right, down
+* 0, 1: lStick, h, v
+* 2, 3: rStick, h, v
