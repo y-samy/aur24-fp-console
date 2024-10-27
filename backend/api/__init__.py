@@ -7,6 +7,8 @@ from robot.vision.camera import VideoCamera
 from robot.vision.decoding import QR
 
 from .events.mqtt import mqttc
+from .events import *
+from .routes import video_routes
 
 box_handler = BoxHandler()
 qr_decoder = QR(receiver_function=box_handler.receive_coords)
@@ -17,7 +19,6 @@ CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
 socketio = SocketIO(app, cors_allowed_origins="http://localhost:3000")
 
 # api routes
-from .routes import video_routes
 app.register_blueprint(video_routes, url_prefix='/video')
 
 # mqtt
@@ -25,6 +26,5 @@ mqttc.connect(host="localhost")
 mqttc.loop_start()
 
 # api events
-from .events import *
 box_handler.set_callback_on_new_box(push_new_box)
 
