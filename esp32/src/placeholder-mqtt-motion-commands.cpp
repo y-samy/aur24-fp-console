@@ -1,18 +1,26 @@
 #include <WiFi.h>
 #include <PubSubClient.h>
+#include <HTTPClient.h>
+#include <Arduino_JSON.h>
+
 
 // WiFi
-const char *ssid = "Youssef"; // Enter your Wi-Fi name
-const char *password = "yassin1512";  // Enter Wi-Fi password
+const char *ssid = "TeamB"; // Enter your Wi-Fi name
+const char *password = "balobalo";  // Enter Wi-Fi password
 
 // MQTT Broker
-const char *mqtt_broker = "192.168.1.11";
+const char *mqtt_broker = "192.168.172.97";
 const char *topic = "Motion Commands";
 const int mqtt_port = 1883;
 
 WiFiClient espClient;
 PubSubClient client(espClient);
+HTTPClient http;
+String jsonBuffer;
+unsigned long lastTime = 0;
+unsigned long timerDelay = 1000;
 void callback(char *topic, byte *payload, unsigned int length);
+String httpGETRequest(const char* serverName);
 void setup() {
     // Set software serial baud to 115200;
     Serial.begin(115200);
@@ -51,5 +59,55 @@ void callback(char *topic, byte *payload, unsigned int length) {
 }
 
 void loop() {
-    client.loop();
+    client.loop(); //mqtt client
+    
+    // http get request
+    if ((millis() - lastTime) > timerDelay) {
+    // Check WiFi connection status
+    if(WiFi.status()== WL_CONNECTED){
+      String serverPath = "http://192.168.172.75:8080/get?accX&accY&accZ";
+      
+      jsonBuffer = httpGETRequest(serverPath.c_str());
+      Serial.println(jsonBuffer);
+      JSONVar myObject = JSON.parse(jsonBuffer);
+  
+      // JSON.typeof(jsonVar) can be used to get the type of the var
+      if (JSON.typeof(myObject) == "undefined") {
+        Serial.println("Parsing input failed!");
+        return;
+      }
+    
+      Serial.print("JSON object = ");
+      Serial.println(myObject);
+    }
+    else {
+      Serial.println("WiFi Disconnected");
+    }
+    lastTime = millis();
+  }
+}
+
+String httpGETRequest(const char* serverName) {
+    
+  // Your Domain name with URL path or IP address with path
+  http.begin(espClient, serverName);
+  
+  // Send HTTP POST request
+  int httpResponseCode = http.GET();
+  
+  String payload = "{}"; 
+  
+  if (httpResponseCode>0) {
+    Serial.print("HTTP Response code: ");
+    Serial.println(httpResponseCode);
+    payload = http.getString();
+  }
+  else {
+    Serial.print("Error code: ");
+    Serial.println(httpResponseCode);
+  }
+  // Free resources
+  http.end();
+
+  return payload;
 }
