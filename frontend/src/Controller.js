@@ -1,32 +1,44 @@
 import { useEffect } from "react";
-
+import { io } from 'socket.io-client';
+const socketIo = io('http://localhost:5000');
 function GamepadController() {
   useEffect(() => {
     const intervalId = setInterval(() => {
       const gamepads = navigator.getGamepads();
-
+      let command = -1; // 0 arm, 1 grip, 2 move, 3 rotate
+      let commandValue = 0; // arm up/down, grip open/close, move forward/backward (-1->1), rotate left/right (-1->1)
       if (gamepads[0]) { // Ensure a gamepad is connected
+        command = -1;
         const gamepad = gamepads[0];
-
-        // Create a state object to capture gamepad status
-        const gp_state = {
-          // Button states (pressed or not)
-          x: gamepad.buttons[0].pressed, // B0 ==> x
-          o: gamepad.buttons[1].pressed, // B1 ==> o
-          s: gamepad.buttons[2].pressed, // B2 ==> square
-          t: gamepad.buttons[3].pressed, // B3 ==> triangle
-          r2: gamepad.buttons[7].value, // Right Trigger (B7) ==> R2
-          l2: gamepad.buttons[6].value, // Left Trigger (B6) ==> L2
-          l1: gamepad.buttons[4].pressed, // L1 ==> L1
-          r1: gamepad.buttons[5].pressed, // R1 ==> R1
-
-        };
-        if(gp_state.l1){
-  console.log( gamepads);
+        if (gamepad.buttons[0].pressed){
+          command = 0; // Arm down X 
+          commandValue = 0;
         }
+        else if (gamepad.buttons[3].pressed){
+          command = 0; // Arm up triangle
+          commandValue = 1;
+        }
+        else if (gamepad.buttons[1].pressed){
+          command = 1; // Grip close O
+          commandValue = 0;
+        }
+        else if (gamepad.buttons[2].pressed){
+          command = 1; // Grip open square
+          commandValue = 1;
+        }
+        else if (gamepad.buttons[7].pressed || gamepad.buttons[6].pressed){
+          command = 2; // Motion 1: fwd, -1: bwd
+          commandValue = gamepad.buttons[7].value - gamepad.buttons[6].value
+        }
+        else if (gamepad.axes[2] > 0.1 || gamepad.axes[2] < -0.1){
+          command = 3; // Rotation (horizontal right analog stick, left:-1, right:1)
+          commandValue = gamepad.axes[2];
+        }
+        };
+      if (command !== -1){
+      socketIo.emit("gamepad buttons", `${command},${commandValue}`); 
       }
     }, 15); // Update every 15 milliseconds
-
     return () => clearInterval(intervalId); // Cleanup on component unmount
   }, []);
 

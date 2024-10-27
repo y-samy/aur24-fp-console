@@ -1,8 +1,8 @@
-# aur-fp24-console
+# aur-fp24-software
 
-AU Robotics 2024 Final Project Console - a React + Flask console for monitoring and controlling the robot
+AU Robotics 2024 Final Project
 
-# Contributing
+## Setup
 
 ### The backend
 
@@ -14,14 +14,21 @@ python -m venv flask-venv
 
 Activate the environment
 
+
+Windows
 ```sh
 ./flask-venv/Scripts/activate
+```
+Linux
+```sh
+chmod +x ./flask-venv/bin/activate
+./flask-venv/bin/activate
 ```
 
 Install the dependencies
 
 ```sh
-pip install ./requirements.txt
+pip install ./backend/requirements.txt
 ```
 
 Running the flask server
@@ -29,14 +36,33 @@ Running the flask server
 ```sh
 python ./backend/main.py
 ```
+### The MQTT Broker
+https://mosquitto.org/download/
+
+To run the broker:
+```sh
+mosquitto -c ./mqtt/mosquitto.conf
+```
+
+### The frontend
+
+Dependencies
+```sh
+cd ./frontend
+npm install
+```
+Run
+```sh
+cd ./frontend
+npm start
+```
+
+## Gamepad controls
 **Controller Commands**
-* B6 ==> back
-* B7  ==> fwd
+* L2 = B6 -> back
+* R2 = B7 -> fwd
 * B0, B1 : x, o
 * B2, B3: sqr, tri
 * Axes: +ve right, down
 * 0, 1: lStick, h, v
 * 2, 3: rStick, h, v
-* navigator.getGamepads()[0].buttons[btnID].pressed -> bool
-* navigator.getGamepads()[0].buttons[btnID].value -> 0-1f
-* navigator.getGamepads()[0].axes -> array

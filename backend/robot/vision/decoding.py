@@ -38,7 +38,7 @@ class QR:
                 cv2.FONT_HERSHEY_SIMPLEX,
                 0.8,
                 (0, 255, 0),
-                1,
+                2,
                 cv2.LINE_AA,
             )
 
@@ -66,7 +66,7 @@ class QR:
                         cv2.FONT_HERSHEY_SIMPLEX,
                         0.8,
                         color,
-                        1,
+                        2,
                         cv2.LINE_AA,
                     )
                 else:
@@ -81,7 +81,7 @@ class QR:
                 color = (0, 255, 0)
                 obj_id = self.__send_text(qr)
                 corner = code_geometry[i]["bbox_xyxy"].astype(int)
-                cv2.putText(frame, obj_id, (corner[0], corner[1]), cv2.FONT_HERSHEY_SIMPLEX, 0.8, color, 1, cv2.LINE_AA)
+                cv2.putText(frame, obj_id, (corner[0], corner[1]), cv2.FONT_HERSHEY_SIMPLEX, 0.8, color, 2, cv2.LINE_AA)
             else:
                 color = (0, 0, 255)
             cv2.polylines(frame, [code_geometry[i]["polygon_xy"].astype(int)], True, color, 3)
