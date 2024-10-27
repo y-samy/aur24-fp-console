@@ -7,3 +7,4 @@ cv2-enumerate-cameras
 pyzbar
 numpy
 qreader
+requests
