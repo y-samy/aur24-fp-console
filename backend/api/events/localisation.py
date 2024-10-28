@@ -1,7 +1,7 @@
 import time
 import numpy as np
 import requests
-from fusionekf import FusionEKF
+from .fusionekf import FusionEKF
 from flask import jsonify
 
 # Set numpy print options to avoid scientific notation
@@ -28,9 +28,12 @@ def sensorFusion(aX, gZ, eL, eR):
 
 
 def handleReadings(encoderData):
-    imu_data = jsonify(
-        (requests.get("http://192.168.172.75:8080/get?linX&gyrZ")).content
-    )["buffer"]
+    try:
+        imu_data = jsonify(
+            (requests.get("http://192.168.172.75:8080/get?linX&gyrZ")).content
+        )["buffer"]
+    except requests.ConnectionError:
+        return
     aX = imu_data["linX"]["buffer"][0]
     gZ = imu_data["gyrZ"]["buffer"][0]
     eL = encoderData[0]

@@ -1,4 +1,4 @@
-from kalmanfilter import KalmanFilter
+from .kalmanfilter import KalmanFilter
 import numpy as np
 
 
