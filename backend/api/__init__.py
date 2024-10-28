@@ -19,7 +19,7 @@ CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
 socketio = SocketIO(app, cors_allowed_origins="http://localhost:3000")
 
 # api routes
-app.register_blueprint(video_routes, url_prefix='/video')
+app.register_blueprint(video_routes, url_prefix="/video")
 
 # mqtt
 mqttc.connect(host="localhost")
@@ -27,4 +27,3 @@ mqttc.loop_start()
 
 # api events
 box_handler.set_callback_on_new_box(push_new_box)
-
