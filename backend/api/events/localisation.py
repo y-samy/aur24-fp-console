@@ -9,7 +9,7 @@ np.set_printoptions(suppress=True, precision=8)
 
 # Initialize the EKF once outside the function to maintain state across calls
 ekf = FusionEKF()
-counts = 240  # counts per revolution
+counts = 16  # counts per revolution
 radius = 0.325  # radius of wheel
 
 

@@ -7,7 +7,7 @@ class FusionEKF:
         self.ekf_ = KalmanFilter()
         self.is_initialized = False
         self.previous_timestamp = 0
-        self.L = 0.1  # Distance between wheels in meters, adjust as needed
+        self.L = 0.2  # Distance between wheels in meters, adjust as needed
 
     def process_measurement(self, timestamp, sensor_type, measurement):
         if not self.is_initialized:
