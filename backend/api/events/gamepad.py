@@ -9,7 +9,7 @@ def map_and_send_buttons(command):
     print(command)
     # mqttc.publish("Motion Commands", command, qos=1) # to localhost:1883
     index = int(command[0])
-    value = float(command[1])
+    value = float(command[2:])
     if index == 0:  # Control the arm (up/down)
         if value == 1:
             # Arm up
