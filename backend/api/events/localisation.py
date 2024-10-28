@@ -9,6 +9,8 @@ np.set_printoptions(suppress=True, precision=8)
 
 # Initialize the EKF once outside the function to maintain state across calls
 ekf = FusionEKF()
+counts = 240  # counts per revolution
+radius = 0.325  # radius of wheel
 
 
 def sensorFusion(aX, gZ, eL, eR):
@@ -27,6 +29,10 @@ def sensorFusion(aX, gZ, eL, eR):
     return ekf.ekf_.x[:3]  # [px, py, yaw]
 
 
+def calcDistance(x):
+    return (x / counts) * 2 * 3.14156 * radius
+
+
 def handleReadings(encoderData):
     try:
         imu_data = jsonify(
@@ -36,8 +42,11 @@ def handleReadings(encoderData):
         return
     aX = imu_data["linX"]["buffer"][0]
     gZ = imu_data["gyrZ"]["buffer"][0]
-    eL = encoderData[0]
-    eR = encoderData[1]
+    eLC = encoderData[0]
+    eRC = encoderData[1]
+    eL = calcDistance(eLC)
+    eR = calcDistance(eRC)
+
     sensorFusion(aX, gZ, eL, eR)
 
 
