@@ -225,6 +225,9 @@ Several of the communication components are hosted directly, either partly or fu
     \end{tabular}}
     \egroup
 \end{center}
+
+Mutlithreading for the different event handlers is handled graciously by the libraries used (\texttt{Flask}, \texttt{Flask-SocketIO}, \texttt{Paho-MQTT}). As an example, \texttt{Paho-MQTT}'s \texttt{loop\_start} and \texttt{loop\_stop} are used instead of the thread-blocking \texttt{loop\_forever} which requires manual thread handling.
+
 The full dataflow is illustrated in Section \ref{dataflow}.
 \section{Setup Instructions}
 Setup instructions for every software component will be indicated and updated in the repositories various README files.
