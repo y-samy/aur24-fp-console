@@ -137,23 +137,23 @@ This is the command format along with the precedence for each command:
     \bgroup
     \def\arraystretch{1.5}
     {\rowcolors{0}{white!70!gray!70}{white!90!gray!70}
-    \begin{tabular}{|l|l|l|p{6em}|}
-        \hline
-        \textbf{Index} & \textbf{DS$^*$ Button} & \textbf{Command} & \textbf{Value}\\
-        \hline
-        0 & $\times$ & Arm Down & 0 \\
-        \hline
-        0 & $\triangle$ & Arm Up & 1 \\
-        \hline
-        1 & $\bigcirc$ & Grip Close & 0 \\
-        \hline
-        1 & $\square$ & Grip Open & 1 \\
-        \hline
-        2 & R2/ L2  & Both Wheels $\uparrow$/ $\downarrow$ & $\sz1 \rightarrow 1$ \\
-        \hline
-        3 & R Stick $\rightarrow$/ $\leftarrow$ & One Wheel (Rotation) & $\sz1 \rightarrow 0 :$ left \newline $0 \rightarrow 1:$ right\\
-        \hline
-    \end{tabular}}
+        \begin{tabular}{|l|l|l|p{6em}|}
+            \hline
+            \textbf{Index} & \textbf{DS$^*$ Button}              & \textbf{Command}                     & \textbf{Value}                                                \\
+            \hline
+            0              & $\times$                            & Arm Down                             & 0                                                             \\
+            \hline
+            0              & $\triangle$                         & Arm Up                               & 1                                                             \\
+            \hline
+            1              & $\bigcirc$                          & Grip Close                           & 0                                                             \\
+            \hline
+            1              & $\square$                           & Grip Open                            & 1                                                             \\
+            \hline
+            2              & R2/ L2                              & Both Wheels $\uparrow$/ $\downarrow$ & $\sz1 \rightarrow 1$                                          \\
+            \hline
+            3              & R Stick $\rightarrow$/ $\leftarrow$ & One Wheel (Rotation)                 & $\sz1 \rightarrow 0 :$ left \newline $0 \rightarrow 1:$ right \\
+            \hline
+        \end{tabular}}
     \egroup
 
     \footnotesize{$^*$ DualShock \textregistered\ or DualSense \textregistered\ which belong to Sony \texttrademark}\\
@@ -173,17 +173,17 @@ The algorithms that are made available:
     \bgroup
     \def\arraystretch{1.5}
     {\rowcolors{0}{white!70!gray!70}{white!90!gray!70}
-    \begin{tabular}{|c|c|c|}
-        \hline
-        \textbf{Library} & \textbf{Strengths} & \textbf{Weaknesses} \\
-        \hline
-        \texttt{pyzbar} & Extremely Efficient & Angled Codes \\
-        \hline
-        \texttt{cv2 -- builtin} & Angled Codes & Less Efficient \\
-        \hline
-        \texttt{qreader} & Deepest Detection & Least Efficient \\
-        \hline
-    \end{tabular}}
+        \begin{tabular}{|c|c|c|}
+            \hline
+            \textbf{Library}        & \textbf{Strengths}  & \textbf{Weaknesses} \\
+            \hline
+            \texttt{pyzbar}         & Extremely Efficient & Angled Codes        \\
+            \hline
+            \texttt{cv2 -- builtin} & Angled Codes        & Less Efficient      \\
+            \hline
+            \texttt{qreader}        & Deepest Detection   & Least Efficient     \\
+            \hline
+        \end{tabular}}
     \egroup
 \end{center}
 The individual in charge of navigation will be able to switch between the algorithms on-the-fly or even disable them completely. This would also be useful in cases of autonomous or semi-autonomous navigation.
@@ -193,19 +193,19 @@ Several of the communication components are hosted directly, either partly or fu
     \bgroup
     \def\arraystretch{1.5}
     {\rowcolors{0}{white!70!gray!70}{white!90!gray!70}
-    \begin{tabular}{|c|c|c|}
-        \hline
-        \textbf{Host} & \textbf{Component} & \textbf{Connects to} \\
-        \hline
-        Mobile & IMU & \con\ w/ HTTP GET \\
-        \hline
-        Mobile & Camera & \con\ w/ HTTP \\
-        \hline
-        \con & \texttt{MQTT Broker} & \esp \\
-        \hline
-        \con\ -- Backend & Flask \& SocketIO & Frontend \\
-        \hline
-    \end{tabular}}
+        \begin{tabular}{|c|c|c|}
+            \hline
+            \textbf{Host}    & \textbf{Component}   & \textbf{Connects to} \\
+            \hline
+            Mobile           & IMU                  & \con\ w/ HTTP GET    \\
+            \hline
+            Mobile           & Camera               & \con\ w/ HTTP        \\
+            \hline
+            \con             & \texttt{MQTT Broker} & \esp                 \\
+            \hline
+            \con\ -- Backend & Flask \& SocketIO    & Frontend             \\
+            \hline
+        \end{tabular}}
     \egroup
 \end{center}
 
@@ -226,7 +226,7 @@ Programming the \esp\ to do the following:
 
 With the power of the laptop used for the \con, the localization team should efficiently and accurately calculate the coordinates.
 
-The team will receive the encoder readings from the \esp\ as shown in Section \ref{locflow}.There is little communication overhead with the \esp\ due to the fact that the \texttt{MQTT Broker} is running locally on the \con.
+The team will receive the encoder readings from the \esp\ as shown in Section \ref{locflow}.There is little communication overhead with the \texttt{ESP-} \texttt{32WROOM} due to the fact that the \texttt{MQTT Broker} is running locally on the \con.
 After receiving the encoder data, the IMU readings --- which are the linear acceleration in the $x$ direction, and the angular acceleration in the $z$ direction --- are requested from the mobile phone mounted on the robot.
 
 A Kalman filter will be performed on the accelerations to obtain their respective velocities, then fusion of all the data will be performed to calculate the current coordinates and dispatch them to the frontend.
