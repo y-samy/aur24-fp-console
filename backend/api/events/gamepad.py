@@ -68,4 +68,3 @@ def map_and_send_buttons(command):
             publish("Motion Commands", left)
     else:
         print("Unknown index received")
-    publish.single("Motion Commands", command)  # to localhost:1883

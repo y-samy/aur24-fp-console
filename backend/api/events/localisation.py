@@ -36,7 +36,7 @@ def calcDistance(x):
 def handleReadings(encoderData):
     try:
         imu_data = jsonify(
-            (requests.get("http://192.168.172.75:8080/get?linX&gyrZ")).content
+            (requests.get("http://192.168.159.194:8080/get?linX&gyrZ")).content
         )["buffer"]
     except requests.ConnectionError:
         return
@@ -44,6 +44,7 @@ def handleReadings(encoderData):
     gZ = imu_data["gyrZ"]["buffer"][0]
     eLC = encoderData[0]
     eRC = encoderData[1]
+    print(encoderData)
     eL = calcDistance(eLC)
     eR = calcDistance(eRC)
 
