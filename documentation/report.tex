@@ -116,23 +116,6 @@ This report serves as a technical overview of everything that has been worked on
 \subsection{Computer Vision Dataflow} \label{visflow}
 \includegraphics[trim=40 550 0 57,scale=0.95,clip]{diagrams/vis.pdf}
 
-\section{Embedded}
-\subsection*{Goals}
-Programming the \esp\ to do the following:
-\begin{itemize}
-    \item receive motion commands from the console and translating them into something the motors can understand
-    \item translate commands related to the arm and gripper into something the servo can understand
-    \item send encoder data to the console to enable it to carry out its localization routine
-\end{itemize}
-\section{Localization \& Motion}
-\subsection*{Goals}
-
-With the power of the laptop used for the \con, the localization team should efficiently and accurately calculate the coordinates.
-
-The team will receive the encoder readings from the \esp\ as shown in Section \ref{locflow}.There is little communication overhead with the \esp\ due to the fact that the \texttt{MQTT Broker} is running locally on the \con.
-After receiving the encoder data, the IMU readings --- which are the linear acceleration in the $x$ direction, and the angular acceleration in the $z$ direction --- are requested from the mobile phone mounted on the robot.
-
-A Kalman filter will be performed on the accelerations to obtain their respective velocities, then fusion of all the data will be performed to calculate the current coordinates and dispatch them to the frontend.
 \section{Console}
 
 The \con\ is the powerhouse that all things computable get pushed to. As an extension, it also orchestrates much of the communication between the devices and processes the video feed for detection and decoding of QR codes.
@@ -178,9 +161,9 @@ This is the command format along with the precedence for each command:
 
 The reason for using this precedence is to avoid damaging the wheels' differential, by allowing only one type of motion to go through.
 
-As clarification for the forward and backward motion, the command's value is calculated by subtracting the R2 value form the L2 value and sending the command accordingly.
+As clarification for the forward and backward motion, the command's value is calculated by subtracting the L2 value form the R2 value and sending the command accordingly.
 
-The right analog stick is calibrated using the controller's firmware by doing a full rotation before running the robot, and a further error of $0.1$ in any direction is accounted for --- the vertical directions are disregarded as are all other inputs.
+The right analog stick is calibrated using the controller's firmware by doing a full rotation while connected to the \con\ before running the robot, and a further error of $0.1$ in any direction is accounted for --- the vertical directions are disregarded as are all other inputs.
 
 \subsection{Computer Vision}
 The role of computer vision is to detect and decode the QR codes on every box and assign a box number to each code, allowing the individual in charge of navigation to effectively track which boxes need to go where.
@@ -229,6 +212,26 @@ Several of the communication components are hosted directly, either partly or fu
 Mutlithreading for the different event handlers is handled graciously by the libraries used (\texttt{Flask}, \texttt{Flask-SocketIO}, \texttt{Paho-MQTT}). As an example, \texttt{Paho-MQTT}'s \texttt{loop\_start} and \texttt{loop\_stop} are used instead of the thread-blocking \texttt{loop\_forever} which requires manual thread handling.
 
 The full dataflow is illustrated in Section \ref{dataflow}.
+
+\section{Embedded}
+\subsection*{Goals}
+Programming the \esp\ to do the following:
+\begin{itemize}
+    \item receive motion commands from the console and translate them into something the motors can understand
+    \item translate commands related to the arm and gripper into something the servo can understand
+    \item send encoder data to the console to enable it to carry out its localization routine
+\end{itemize}
+\section{Localization \& Motion}
+\subsection*{Goals}
+
+With the power of the laptop used for the \con, the localization team should efficiently and accurately calculate the coordinates.
+
+The team will receive the encoder readings from the \esp\ as shown in Section \ref{locflow}.There is little communication overhead with the \esp\ due to the fact that the \texttt{MQTT Broker} is running locally on the \con.
+After receiving the encoder data, the IMU readings --- which are the linear acceleration in the $x$ direction, and the angular acceleration in the $z$ direction --- are requested from the mobile phone mounted on the robot.
+
+A Kalman filter will be performed on the accelerations to obtain their respective velocities, then fusion of all the data will be performed to calculate the current coordinates and dispatch them to the frontend.
+
 \section{Setup Instructions}
-Setup instructions for every software component will be indicated and updated in the repositories various README files.
+Setup instructions for every software component will be indicated and updated in the repository's various README files.
+The repository will be hosted remotely at 
 \end{document}
