@@ -211,7 +211,7 @@ This is the command format along with the precedence for each command:
             \hline
             2              & R2/ L2                              & Both Wheels $\uparrow$/ $\downarrow$ & $\sz1 \rightarrow 1$                                          \\
             \hline
-            3              & R Stick $\rightarrow$/ $\leftarrow$ & One Wheel (Rotation)                 & $\sz1 \rightarrow 0 :$ left \newline $0 \rightarrow 1:$ right \\
+            3              & R Stick $\rightarrow$/ $\leftarrow$ & Rotation                             & $\sz1 \rightarrow 0 :$ left \newline $0 \rightarrow 1:$ right \\
             \hline
         \end{tabular}}
     \egroup
@@ -280,6 +280,7 @@ Programming the \esp\ to do the following:
     \item receive motion commands from the console and translate them into something the motors can understand
     \item translate commands related to the arm and gripper into something the servo can understand
     \item send encoder data to the console to enable it to carry out its localization routine
+    \item split the receiving and sending and the callbacks across different tasks with \texttt{RTOS}
 \end{itemize}
 \section{Localization \& Motion}
 With the power of the laptop used for the \con, the localization team should efficiently and accurately calculate the coordinates and send correct commands from the gamepad to the \esp.
@@ -467,20 +468,20 @@ Both the \texttt{L293D} and \texttt{L293} are dual H-bridge motor drivers, but t
 
 \begin{itemize}
     \item[1.] \textbf{Back-EMF Protection}:
-    \begin{itemize}
-        \item \texttt{L293D} includes \textbf{internal protection diodes} for back-EMF, making it safer to use with inductive loads (like motors) without needing external diodes
-        \item \texttt{L293} lacks these protection diodes, so external diodes are necessary to prevent back-EMF from damaging the circuit
-    \end{itemize}
+          \begin{itemize}
+              \item \texttt{L293D} includes \textbf{internal protection diodes} for back-EMF, making it safer to use with inductive loads (like motors) without needing external diodes
+              \item \texttt{L293} lacks these protection diodes, so external diodes are necessary to prevent back-EMF from damaging the circuit
+          \end{itemize}
     \item[2.] \textbf{Current Handling}:
-    \begin{itemize}
-        \item \texttt{L293D} is rated for \textbf{600mA continuous current per channel} (1.2A peak)
-        \item \texttt{L293} can handle a higher \textbf{continuous current of 1A per channel} and up to \textbf{2A peak}, making it suitable for heavier loads than the \texttt{L293D}
-    \end{itemize}
+          \begin{itemize}
+              \item \texttt{L293D} is rated for \textbf{600mA continuous current per channel} (1.2A peak)
+              \item \texttt{L293} can handle a higher \textbf{continuous current of 1A per channel} and up to \textbf{2A peak}, making it suitable for heavier loads than the \texttt{L293D}
+          \end{itemize}
     \item[3.] \textbf{Cost and Availability}:
-    \begin{itemize}
-        \item The \texttt{L293D} is more commonly used in educational and hobbyist projects due to its integrated protection diodes and slightly lower current capacity
-        \item \texttt{L293} may be used in projects requiring higher current without needing internal protection.
-    \end{itemize}
+          \begin{itemize}
+              \item The \texttt{L293D} is more commonly used in educational and hobbyist projects due to its integrated protection diodes and slightly lower current capacity
+              \item \texttt{L293} may be used in projects requiring higher current without needing internal protection.
+          \end{itemize}
 \end{itemize}
 
 \subsection{Practical Applications}
