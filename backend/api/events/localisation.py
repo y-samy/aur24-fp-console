@@ -1,6 +1,7 @@
 import time
 import numpy as np
 import requests
+from . import socketio
 from .fusionekf import FusionEKF
 
 # Set numpy print options to avoid scientific notation
@@ -25,7 +26,10 @@ def sensorFusion(aX, gZ, eL, eR):
     ekf.process_measurement(timestamp, "WHEEL_ENCODER", wheel_measurement)
 
     # Return the position (px, py) and yaw
-    return ekf.ekf_.x[:3]  # [px, py, yaw]
+    position = ekf.ekf_.x[:3]  # [px, py, yaw]
+
+    # Return formatted string with values rounded to 2 decimal places
+    socketio.emit("robot coords", {'X': f"{position[0][0]:.2f}", "Y" : "{position[1][0]:.2f}"})
 
 
 def calcDistance(x):
@@ -48,16 +52,24 @@ def handleReadings(encoderData):
     sensorFusion(aX, gZ, eL, eR)
 
 
-# if __name__ == "__main__":
-#     try:
-#         print("Test 1 Result:", sensorFusion(0.0, 0.0, 0.0, 0.0))  # Initial state
-#         print("Test 2 Result:", sensorFusion(0.064, 0, 6.4, 6.4))  # Change values for testing
-#         print("Test 3 Result:", sensorFusion(0.1, 0, 3.2, 3.2))    # Moderate movement with acceleration
-#         print("Test 4 Result:", sensorFusion(0.05, 0.1, 2.0, 2.5)) # Curved path movement
-#         print("Test 5 Result:", sensorFusion(-0.05, 0, 1.6, 1.6))  # Deceleration to stop
-#         print("Test 6 Result:", sensorFusion(0.02, 0.5, 1.0, 1.5)) # Sharp turn
-#     except Exception as e:
-#         print(f"An error occurred: {e}")
+if __name__ == "__main__":
+    try:
+        print("Test 1 Result:", sensorFusion(0.0, 0.0, 0.0, 0.0))  # Initial state
+        print(
+            "Test 2 Result:", sensorFusion(0.064, 0, 6.4, 6.4)
+        )  # Change values for testing
+        print(
+            "Test 3 Result:", sensorFusion(0.1, 0, 3.2, 3.2)
+        )  # Moderate movement with acceleration
+        print(
+            "Test 4 Result:", sensorFusion(0.05, 0.1, 2.0, 2.5)
+        )  # Curved path movement
+        print(
+            "Test 5 Result:", sensorFusion(-0.05, 0, 1.6, 1.6)
+        )  # Deceleration to stop
+        print("Test 6 Result:", sensorFusion(0.02, 0.5, 1.0, 1.5))  # Sharp turn
+    except Exception as e:
+        print(f"An error occurred: {e}")
 # Expected Values
 # (0,0,0)
 # (4,5,0)

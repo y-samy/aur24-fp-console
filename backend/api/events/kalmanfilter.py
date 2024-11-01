@@ -14,20 +14,20 @@ class KalmanFilter:
         )  # Adjusted measurement noise covariance for wheel encoders
 
     def predict(self):
-        print(f"Predicting... Current state: {self.x.flatten()}")
+        # print(f"Predicting... Current state: {self.x.flatten()}")
         self.x = self.F @ self.x
         self.P = self.F @ self.P @ self.F.T + self.Q
-        print(f"Predicted state: {self.x.flatten()}")
+        # print(f"Predicted state: {self.x.flatten()}")
 
     def update(self, z, R):
-        print(f"Updating... Measurement: {z.flatten()}")
+        # print(f"Updating... Measurement: {z.flatten()}")
         y = z - (self.H @ self.x)
         S = self.H @ self.P @ self.H.T + R
         K = self.P @ self.H.T @ np.linalg.inv(S)
 
         self.x += K @ y
         self.P = (np.eye(len(self.P)) - K @ self.H) @ self.P
-        print(f"Updated state: {self.x.flatten()}")
+        # print(f"Updated state: {self.x.flatten()}")
 
     def update_imu(self, z):
         self.H = np.eye(3, 6)  # Update H for IMU measurements

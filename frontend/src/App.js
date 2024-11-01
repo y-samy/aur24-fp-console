@@ -7,7 +7,7 @@ import MapDisplay from './Display/MapDisplay.js';
 
 const App = () => {
   const [isConnected, setIsConnected] = useState(socket.connected);
-  const [robotPosition, setRobotPosition] = useState({ x: 0, y: 0 }); 
+  const [robotPosition, setRobotPosition] = useState({}); 
   const [scanningData, setScanningData] = useState([]);
   useEffect(() => {
     function onConnect() {
@@ -22,7 +22,7 @@ const App = () => {
         setScanningData(prevData => [...prevData, coords]);
     }
     function onRobotCoords(coords) {
-      setRobotPosition({ x: coords.x, y: coords.y });
+      setRobotPosition({ x: coords.X, y: coords.Y });
     }
     socket.on('connect', onConnect);
     socket.on('new box', onNewBox);
@@ -38,16 +38,16 @@ const App = () => {
   }, []);
 
  const ScanOff = () =>{
-  fetch("/configure_scanning/off");
+  fetch("/video/configure_scanning/off");
  }
  const ScanFast = () =>{
-  fetch("/configure_scanning/pyzbar")
+  fetch("/video/configure_scanning/pyzbar")
  }
  const ScanTilt = () => {
-  fetch("/configure_scanning/cv")
+  fetch("/video/configure_scanning/cv")
  }
  const ScanDeep = () => {
-  fetch("/configure_scanning/qreader")
+  fetch("/video/configure_scanning/qreader")
  }
   return (
     <>
@@ -83,7 +83,7 @@ const App = () => {
             </button>
           </div>
           <h1>Robot Position</h1>
-          <MapDisplay robotPosition={robotPosition} />
+          <MapDisplay robotPosition1={robotPosition} />
         </div>
       </div>
       <GamepadController />

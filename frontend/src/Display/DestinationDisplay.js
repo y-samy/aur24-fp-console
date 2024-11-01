@@ -1,6 +1,8 @@
 import React from 'react';
 
 const DestinationDisplay = ({destinationPosition}) =>{
+  console.log("destination"+destinationPosition);
+  
   return (
     <>
       {destinationPosition.map((box, index) => (
