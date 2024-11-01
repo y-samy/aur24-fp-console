@@ -37,6 +37,7 @@ def calcDistance(x):
 
 
 def handleReadings(encoderData):
+    print(encoderData)
     try:
        imu_data = requests.get("http://192.168.251.89:8080/get?linX&gyrZ").content["buffer"]
     except requests.ConnectionError:
