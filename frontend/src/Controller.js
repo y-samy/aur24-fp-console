@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { io } from 'socket.io-client';
-const socketIo = io('http://localhost:5000');
+import { socket } from "./socket";
+
 function GamepadController() {
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -36,7 +36,7 @@ function GamepadController() {
         }
         };
       if (command !== -1){
-      socketIo.emit("gamepad buttons", `${command},${commandValue}`); 
+      socket.emit("gamepad buttons", `${command},${commandValue}`); 
       }
     }, 15); // Update every 15 milliseconds
     return () => clearInterval(intervalId); // Cleanup on component unmount
