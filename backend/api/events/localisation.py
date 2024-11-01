@@ -44,8 +44,8 @@ def handleReadings(encoderData):
        return
     aX = imu_data["linX"]["buffer"][0]
     gZ = imu_data["gyrZ"]["buffer"][0]
-    eLC = encoderData[0]
-    eRC = encoderData[1]
+    eLC = int(encoderData[0])
+    eRC = int(encoderData[1])
     print(encoderData)
     eL = calcDistance(eLC)
     eR = calcDistance(eRC)
