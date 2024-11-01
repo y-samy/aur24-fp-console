@@ -2,16 +2,14 @@ import React, { useState, useEffect } from "react";
 import GamepadController from './Controller.js';
 import "./App.css";
 import { io } from 'socket.io-client';
-import MapDisplay from './MapDisplay'; 
+import MapDisplay from './Display/MapDisplay.js'; 
 
+const socketIo = io('http://localhost:5000');
 
 const App = () => {
   const [scanningData, setScanningData] = useState([]);
   const [robotPosition, setRobotPosition] = useState({ x: 0, y: 0 }); 
   const [connectionMessage, setConnectionMessage] = useState(""); 
- 
-  const socketIo = io('http://localhost:5000');
-
   useEffect(() => {
     socketIo.on("connect", () => {
       console.log("Connected to Socket.IO server");
@@ -29,14 +27,10 @@ const App = () => {
     socketIo.on("localization_data", (data) => {
       setRobotPosition({ x: data.x, y: data.y });
     });
-
-    // Listen for new scanned data
     socketIo.on("new_scanned_data", (data) => {
       console.log("New scanned data:", data.coords);
-      // Update the scanningData state with the new coordinates
       setScanningData(prevData => [...prevData, data.coords]);
     });
-
     // Cleanup on unmount
     return () => {
       socketIo.off("connect");
@@ -53,10 +47,10 @@ const App = () => {
     console.log("Scanning toggled");
   };
 
-  const requestLocalizationData = () => {
-    socketIo.emit("request_localization_data");
-  };
 
+ const ScanOff = () =>{
+  console.log("b5");
+ }
   return (
     <>
       <div className="app-container">
@@ -77,8 +71,8 @@ const App = () => {
             />
           </div>
           <div className="controls">
-            <button onClick={requestLocalizationData}>
-              Get Localization Data
+            <button onClick={ScanOff}>
+ScanOff
             </button>
             <button onClick={handleScan}>
               Fast scan
@@ -93,7 +87,7 @@ const App = () => {
           <h1>Robot Position</h1>
           <MapDisplay robotPosition={robotPosition} />
           <div className="connection-message">
-            {connectionMessage} {/* Display connection message */}
+            {connectionMessage}
           </div>
         </div>
       </div>
