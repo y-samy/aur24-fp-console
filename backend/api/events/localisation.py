@@ -3,6 +3,7 @@ import numpy as np
 import requests
 from . import socketio
 from .fusionekf import FusionEKF
+import json
 
 # Set numpy print options to avoid scientific notation
 np.set_printoptions(suppress=True, precision=8)
@@ -39,7 +40,7 @@ def calcDistance(x):
 def handleReadings(encoderData):
     print(encoderData)
     try:
-       imu_data = requests.get("http://192.168.251.89:8080/get?linX&gyrZ").content["buffer"]
+       imu_data = json.loads(requests.get("http://192.168.251.89:8080/get?linX&gyrZ").content)["buffer"]
     except requests.ConnectionError:
        return
     aX = imu_data["linX"]["buffer"][0]
