@@ -1,62 +1,54 @@
 import React, { useState, useEffect } from "react";
 import GamepadController from './Controller.js';
 import "./App.css";
-import { io } from 'socket.io-client';
-import MapDisplay from './MapDisplay'; 
+import { socket } from './socket';
+import MapDisplay from './Display/MapDisplay.js'; 
 
 
 const App = () => {
+  const [isConnected, setIsConnected] = useState(socket.connected);
+  const [robotPosition, setRobotPosition] = useState({}); 
   const [scanningData, setScanningData] = useState([]);
-  const [robotPosition, setRobotPosition] = useState({ x: 0, y: 0 }); 
-  const [connectionMessage, setConnectionMessage] = useState(""); 
- 
-  const socketIo = io('http://localhost:5000');
-
   useEffect(() => {
-    socketIo.on("connect", () => {
-      console.log("Connected to Socket.IO server");
-    });
+    function onConnect() {
+      setIsConnected(true);
+    }
 
-    socketIo.on("connected", (data) => { 
-      setConnectionMessage(data.message); 
-      console.log("Message from server:", data.message);
-    });
+    function onDisconnect() {
+      setIsConnected(false);
+    }
 
-    socketIo.on("scanning_toggled", (data) => {
-      console.log("Message from server:", data.status);
-    });
+    function onNewBox(coords){
+        setScanningData(prevData => [...prevData, coords]);
+    }
+    function onRobotCoords(coords) {
+      setRobotPosition({ x: coords.X, y: coords.Y });
+    }
+    socket.on('connect', onConnect);
+    socket.on('new box', onNewBox);
+    socket.on('robot coords', onRobotCoords)
+    socket.on('disconnect', onDisconnect);
 
-    socketIo.on("localization_data", (data) => {
-      setRobotPosition({ x: data.x, y: data.y });
-    });
-
-    // Listen for new scanned data
-    socketIo.on("new_scanned_data", (data) => {
-      console.log("New scanned data:", data.coords);
-      // Update the scanningData state with the new coordinates
-      setScanningData(prevData => [...prevData, data.coords]);
-    });
-
-    // Cleanup on unmount
     return () => {
-      socketIo.off("connect");
-      socketIo.off("connected");
-      socketIo.off("scanning_toggled");
-      socketIo.off("localization_data");
-      socketIo.off("new_scanned_data");
-      socketIo.disconnect();
+      socket.off('connect', onConnect);
+      socket.off('disconnect', onDisconnect);
+      socket.off('new box', onNewBox);
+      socket.off('robot coords', onRobotCoords);
     };
   }, []);
 
-  const handleScan = () => {
-    socketIo.emit("toggle_scanning");
-    console.log("Scanning toggled");
-  };
-
-  const requestLocalizationData = () => {
-    socketIo.emit("request_localization_data");
-  };
-
+ const ScanOff = () =>{
+  fetch("/video/configure_scanning/off");
+ }
+ const ScanFast = () =>{
+  fetch("/video/configure_scanning/pyzbar")
+ }
+ const ScanTilt = () => {
+  fetch("/video/configure_scanning/cv")
+ }
+ const ScanDeep = () => {
+  fetch("/video/configure_scanning/qreader")
+ }
   return (
     <>
       <div className="app-container">
@@ -77,24 +69,21 @@ const App = () => {
             />
           </div>
           <div className="controls">
-            <button onClick={requestLocalizationData}>
-              Get Localization Data
+            <button onClick={ScanOff}>
+              ScanOff
             </button>
-            <button onClick={handleScan}>
+            <button onClick={ScanFast}>
               Fast scan
             </button>
-            <button>
+            <button onClick={ScanTilt}>
               Tilt scan
             </button>
-            <button>
+            <button onClick={ScanDeep}>
               Deep Scan
             </button>
           </div>
           <h1>Robot Position</h1>
-          <MapDisplay robotPosition={robotPosition} />
-          <div className="connection-message">
-            {connectionMessage} {/* Display connection message */}
-          </div>
+          <MapDisplay robotPosition1={robotPosition} />
         </div>
       </div>
       <GamepadController />

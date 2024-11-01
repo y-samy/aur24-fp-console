@@ -18,7 +18,7 @@ def on_connect(client, userdata, flags, reason_code, properties):
 def on_message(client, userdata, msg):
     print(msg.topic+" "+str(msg.payload))
     if msg.topic == "Encoders":
-        handleReadings(msg.payload)
+        handleReadings(str(msg.payload, "utf-8"))
 
 
 mqttc.on_connect = on_connect
