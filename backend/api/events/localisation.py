@@ -2,7 +2,6 @@ import time
 import numpy as np
 import requests
 from .fusionekf import FusionEKF
-from flask import jsonify
 
 # Set numpy print options to avoid scientific notation
 np.set_printoptions(suppress=True, precision=8)
@@ -35,11 +34,9 @@ def calcDistance(x):
 
 def handleReadings(encoderData):
     try:
-        imu_data = jsonify(
-            (requests.get("http://192.168.159.194:8080/get?linX&gyrZ")).content
-        )["buffer"]
+       imu_data = requests.get("http://192.168.251.89:8080/get?linX&gyrZ").content["buffer"]
     except requests.ConnectionError:
-        return
+       return
     aX = imu_data["linX"]["buffer"][0]
     gZ = imu_data["gyrZ"]["buffer"][0]
     eLC = encoderData[0]
