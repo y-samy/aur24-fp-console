@@ -5,3 +5,12 @@ numpy
 flask-socketio
 flask-cors
 paho-mqtt
+<<<<<<< Updated upstream:requirements.txt
+=======
+opencv-python
+cv2-enumerate-cameras
+pyzbar
+numpy
+qreader
+requests
+>>>>>>> Stashed changes:backend/requirements.txt
