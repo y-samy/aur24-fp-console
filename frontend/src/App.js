@@ -10,11 +10,6 @@ const App = () => {
   const [scanningData, setScanningData] = useState([]);
   const [robotPosition, setRobotPosition] = useState({ x: 0, y: 0 }); 
   const [connectionMessage, setConnectionMessage] = useState(""); 
-<<<<<<< Updated upstream
-=======
-  const socketIo = io('http://localhost:5000');
->>>>>>> Stashed changes
-
   useEffect(() => {
     socketIo.on("connect", () => {
       console.log("Connected to Socket.IO server");
