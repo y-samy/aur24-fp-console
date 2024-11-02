@@ -66,5 +66,12 @@ def map_and_send_buttons(command):
                 + str(int(np.interp(value, [0, 1], [0, 255])))
             )
             publish("Motion Commands", left)
+    # elif index == 4: # Gripper up or down
+    #     if value > 0:
+    #         gripper_up = "3," + str(+1)
+    #         publish("Motion Commands", gripper_up)
+    #     elif value < 0:
+    #         gripper_down = "3," + str(0)
+    #         publish("Motion Commands", gripper_down)
     else:
         print("Unknown index received")

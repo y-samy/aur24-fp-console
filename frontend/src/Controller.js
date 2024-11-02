@@ -14,6 +14,14 @@ function GamepadController() {
           command = 0; // Arm down X 
           commandValue = 0;
         }
+        // else if (gamepad.buttons[12].pressed){
+        //   command = 4; // Gripper up
+        //   commandValue = 1;
+        // }
+        // else if (gamepad.buttons[13].pressed){
+        //   command = 4; // Gripper down
+        //   commandValue = -1;
+        // }
         else if (gamepad.buttons[3].pressed){
           command = 0; // Arm up triangle
           commandValue = 1;
