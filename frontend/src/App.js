@@ -7,7 +7,7 @@ import MapDisplay from './Display/MapDisplay.js';
 
 const App = () => {
   const [isConnected, setIsConnected] = useState(socket.connected);
-  const [robotPosition, setRobotPosition] = useState({}); 
+  const [robotPosition, setRobotPosition] = useState({x:0,y:0}); 
   const [scanningData, setScanningData] = useState([]);
   useEffect(() => {
     function onConnect() {

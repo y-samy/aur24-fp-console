@@ -30,7 +30,7 @@ function GamepadController() {
           command = 2; // Motion 1: fwd, -1: bwd
           commandValue = gamepad.buttons[7].value - gamepad.buttons[6].value
         }
-        else if (gamepad.axes[2] > 0.1 || gamepad.axes[2] < -0.1){
+        else if (gamepad.axes[2] > 0.2 || gamepad.axes[2] < -0.2){
           command = 3; // Rotation (horizontal right analog stick, left:-1, right:1)
           commandValue = gamepad.axes[2];
         }
